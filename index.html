@@ -1,18 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vóley | Primer JS</title>
+<meta charset="UTF-8">
+<title>Registro de Jugadores de Vóley</title>
+<link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
-    <h1>Vóley Argentino</h1>  
-        
-          <p>Este simulador permite registrar datos básicos de un jugador de vóley.
-    A través de cuadros de diálogo, el usuario ingresa su nombre, edad y
-    posición de juego.</p>
 
-    <script src="main.js"></script>
+<h1>Simulador de Registro de Jugadores 🏐</h1>
+
+<p>
+Este simulador permite registrar jugadores de vóley mediante un formulario.
+Los datos se almacenan en localStorage y se muestran en pantalla.
+</p>
+
+<section class="form-section">
+
+<h2>Registrar jugador</h2>
+
+<form id="formJugador">
+
+<input type="text" id="nombre" placeholder="Nombre del jugador" required>
+
+<input type="number" id="edad" placeholder="Edad" required>
+
+<select id="posicion" required>
+<option value="">Seleccionar posición</option>
+<option value="Armador">Armador</option>
+<option value="Opuesto">Opuesto</option>
+<option value="Central">Central</option>
+<option value="Punta">Punta</option>
+<option value="Líbero">Líbero</option>
+</select>
+
+<button type="submit">Registrar jugador</button>
+
+</form>
+
+</section>
+
+<section>
+
+<h2>Jugadores registrados</h2>
+
+<p id="contador"></p>
+
+<ul id="listaJugadores"></ul>
+
+<h3>Último jugador registrado</h3>
+<p id="ultimoJugador"></p>
+
+</section>
+
+<script src="./js/main.js"></script>
+
 </body>
 </html>
