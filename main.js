@@ -1,81 +1,147 @@
-// CONSTANTES
+// =======================
+// ARRAY DE JUGADORES
+// =======================
 
-const deporte = "Vóley";
-const categoria = "Masculino";
+let jugadores = JSON.parse(localStorage.getItem("jugadores")) || []
 
-const posiciones = [
-  "Armador",
-  "Opuesto",
-  "Central",
-  "Punta",
-  "Líbero"
-];
 
-// Muestra de información
+// =======================
+// OBJETO JUGADOR
+// =======================
 
-function mostrarPosiciones() {
-  alert(
-    "Bienvenido al simulador de " + deporte + " 🏐\n\n" +
-    "Posiciones disponibles:\n" +
-    posiciones.join(" - ")
-  );
-
-  console.log("Posiciones disponibles:", posiciones);
+function Jugador(nombre, edad, posicion){
+this.nombre = nombre
+this.edad = edad
+this.posicion = posicion
 }
 
-// Ingreso de datos
 
-function ingresarDatosJugador() {
-  let nombre = prompt("Ingresá tu nombre:");
-  let edad = prompt("Ingresá tu edad:");
-  let posicion;
+// =======================
+// SELECTORES DOM
+// =======================
 
-// Validación de la posición
-  do {
-    posicion = prompt(
-      "¿Qué posición jugás?\n" +
-      posiciones.join(", ")
-    );
+const formulario = document.getElementById("formJugador")
+const listaJugadores = document.getElementById("listaJugadores")
+const contador = document.getElementById("contador")
+const ultimoJugador = document.getElementById("ultimoJugador")
 
-    if (!posiciones.includes(posicion)) {
-      alert("Posición inválida ❌\nIntentá nuevamente.");
-    }
 
-  } while (!posiciones.includes(posicion));
+// =======================
+// GUARDAR EN LOCALSTORAGE
+// =======================
 
-  console.log("Datos ingresados:", nombre, edad, posicion);
-
-  return {
-    nombre: nombre,
-    edad: edad,
-    posicion: posicion
-  };
+function guardarEnStorage(){
+localStorage.setItem("jugadores", JSON.stringify(jugadores))
 }
 
-// Mostrar resumen del registro
 
-function mostrarResumenJugador(jugador) {
-  alert(
-    "Jugador registrado correctamente ✅\n\n" +
-    "Nombre: " + jugador.nombre +
-    "\nEdad: " + jugador.edad +
-    "\nDeporte: " + deporte +
-    "\nCategoría: " + categoria +
-    "\nPosición: " + jugador.posicion
-  );
+// =======================
+// MOSTRAR JUGADORES
+// =======================
 
-  console.log("Jugador registrado:", jugador);
+function mostrarJugadores(){
+
+listaJugadores.innerHTML = ""
+
+jugadores.forEach((jugador, index) => {
+
+const li = document.createElement("li")
+
+li.innerHTML = `
+${jugador.nombre} | ${jugador.edad} años | ${jugador.posicion}
+<button onclick="eliminarJugador(${index})">Eliminar</button>
+`
+
+listaJugadores.appendChild(li)
+
+})
+
+actualizarContador()
+mostrarUltimoJugador()
+
 }
 
-// Ejecución del simulador
-mostrarPosiciones();
 
-const confirmar = confirm("¿Deseás registrar un jugador?");
+// =======================
+// CONTADOR DE JUGADORES
+// =======================
 
-if (confirmar) {
-  const jugador = ingresarDatosJugador();
-  mostrarResumenJugador(jugador);
-} else {
-  alert("Registro cancelado. ¡Hasta la próxima!");
-  console.log("El usuario canceló el registro.");
+function actualizarContador(){
+contador.textContent = `Total de jugadores registrados: ${jugadores.length}`
 }
+
+
+// =======================
+// MOSTRAR ÚLTIMO JUGADOR
+// =======================
+
+function mostrarUltimoJugador(){
+
+if(jugadores.length > 0){
+
+const jugador = jugadores[jugadores.length - 1]
+
+ultimoJugador.textContent =
+`${jugador.nombre} - ${jugador.posicion}`
+
+}else{
+
+ultimoJugador.textContent = "No hay jugadores registrados"
+
+}
+
+}
+
+
+// =======================
+// REGISTRAR JUGADOR
+// =======================
+
+function registrarJugador(event){
+
+event.preventDefault()
+
+const nombre = document.getElementById("nombre").value
+const edad = document.getElementById("edad").value
+const posicion = document.getElementById("posicion").value
+
+const nuevoJugador = new Jugador(nombre, edad, posicion)
+
+jugadores.push(nuevoJugador)
+
+guardarEnStorage()
+
+mostrarJugadores()
+
+formulario.reset()
+
+}
+
+
+// =======================
+// ELIMINAR JUGADOR
+// =======================
+
+function eliminarJugador(index){
+
+jugadores.splice(index,1)
+
+guardarEnStorage()
+
+mostrarJugadores()
+
+}
+
+
+// =======================
+// EVENTO
+// =======================
+
+formulario.addEventListener("submit", registrarJugador)
+
+
+// =======================
+// CARGA INICIAL
+// =======================
+
+mostrarJugadores()
